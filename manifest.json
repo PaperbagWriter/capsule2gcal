@@ -1,0 +1,35 @@
+{
+  "name": "Université Laval Horaire Capsule à Google Calendar",
+  "version": "1.0",
+  "description": "À partir de Capsule envoie dans Google Calendar",
+  "icons": {
+    "128": "icon128.png"
+  },
+  "manifest_version":2,
+  "browser_action": {
+    "default_title": "ULavalCapsuleToGCal",
+    "default_icon": "icon128.png",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://www.google.com/robots.txt*"],
+      "js": ["oauth2/oauth2_inject.js"],
+        "run_at": "document_start"
+    },
+    {
+      "matches": ["https://capsuleweb.ulaval.ca/pls/etprod8/bwskfshd.P_CrseSchdDetl"],
+      "js": ["jquery-1.12.0.min.js", "content.js"]
+    }
+  ],
+  "permissions": [
+    "https://accounts.google.com/o/oauth2/token",
+    "https://www.googleapis.com/",
+    "activeTab",
+    "tabs",
+    "<all_urls>"
+  ],
+  "web_accessible_resources" : [
+    "oauth2/oauth2.html"
+  ]
+}
