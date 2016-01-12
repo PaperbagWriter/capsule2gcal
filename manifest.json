@@ -19,7 +19,7 @@
     },
     {
       "matches": ["https://capsuleweb.ulaval.ca/pls/etprod8/bwskfshd.P_CrseSchdDetl"],
-      "js": ["jquery-1.12.0.min.js", "content.js"]
+      "js": ["jquery-1.12.0.min.js", "main/content.js"]
     }
   ],
   "permissions": [
