@@ -25,9 +25,7 @@
   "permissions": [
     "https://accounts.google.com/o/oauth2/token",
     "https://www.googleapis.com/",
-    "activeTab",
-    "tabs",
-    "<all_urls>"
+    "tabs"
   ],
   "web_accessible_resources" : [
     "oauth2/oauth2.html"
