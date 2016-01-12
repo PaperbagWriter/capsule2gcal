@@ -61,13 +61,17 @@ $( document ).ready(function() {
 
   function mainTask(html)
   { 
-    
-    tables = $('table', $(html));;
-    tables.each(function(){
-      var i;
-    });
-
-
+    h2 = $('h2', $(html));
+    if(h2.text() == "Sélection d'une session d'études")
+    {
+    }
+    else
+    {
+      tables = $('table', $(html));
+      tables.each(function(){
+        var i;
+      });
+    }  
   }
 
   google.authorize(function() {
@@ -75,8 +79,6 @@ $( document ).ready(function() {
         if (tabs.length > 0) {
           if(tabs[0].url == "https://capsuleweb.ulaval.ca/pls/etprod8/bwskfshd.P_CrseSchdDetl")
           {
-            $("#mainform").fadeIn();
-            $("#liencapsulecont").fadeOut();
             chrome.tabs.sendMessage(tabs[0].id, {method: "getDOM"}, function(response) {
                 if (chrome.runtime.lastError) {
                     console.log("ERROR: ", chrome.runtime.lastError);
@@ -88,8 +90,6 @@ $( document ).ready(function() {
           }
           else
           {
-            $("#mainform").fadeOut();
-            $("#liencapsulecont").fadeIn();
           }         
         }
     });  
