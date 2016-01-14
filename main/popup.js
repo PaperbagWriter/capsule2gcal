@@ -61,13 +61,30 @@ $( document ).ready(function() {
 
   function mainTask(html)
   { 
-    
-    tables = $('table', $(html));;
-    tables.each(function(){
-      var i;
-    });
-
-
+    h2 = $('h2', $(html));
+    switch(h2.text())
+    {
+      case "Sélection d'une session d'études":
+      case "Connexion - Utilisateur":
+        $('#liencapsule').hide();
+        $('#pcapsule').show();
+        break;
+      default:
+      {
+        $('#liencapsulecont').hide();
+        $('#mainform').show();
+        $.fn.push = function(selector) {
+            Array.prototype.push.apply(this, $.makeArray($(selector)));
+            return this;
+        };
+        tables = $('table', $(html));
+        console.log(tables.get( 7 ));
+        console.log(tables.get( 8 ));
+        tables.each(function(){
+          
+        });
+      }
+    }
   }
 
   google.authorize(function() {
@@ -75,8 +92,6 @@ $( document ).ready(function() {
         if (tabs.length > 0) {
           if(tabs[0].url == "https://capsuleweb.ulaval.ca/pls/etprod8/bwskfshd.P_CrseSchdDetl")
           {
-            $("#mainform").fadeIn();
-            $("#liencapsulecont").fadeOut();
             chrome.tabs.sendMessage(tabs[0].id, {method: "getDOM"}, function(response) {
                 if (chrome.runtime.lastError) {
                     console.log("ERROR: ", chrome.runtime.lastError);
@@ -88,8 +103,6 @@ $( document ).ready(function() {
           }
           else
           {
-            $("#mainform").fadeOut();
-            $("#liencapsulecont").fadeIn();
           }         
         }
     });  
