@@ -62,16 +62,29 @@ $( document ).ready(function() {
   function mainTask(html)
   { 
     h2 = $('h2', $(html));
-    if(h2.text() == "Sélection d'une session d'études")
+    switch(h2.text())
     {
+      case "Sélection d'une session d'études":
+      case "Connexion - Utilisateur":
+        $('#liencapsule').hide();
+        $('#pcapsule').show();
+        break;
+      default:
+      {
+        $('#liencapsulecont').hide();
+        $('#mainform').show();
+        $.fn.push = function(selector) {
+            Array.prototype.push.apply(this, $.makeArray($(selector)));
+            return this;
+        };
+        tables = $('table', $(html));
+        console.log(tables.get( 7 ));
+        console.log(tables.get( 8 ));
+        tables.each(function(){
+          
+        });
+      }
     }
-    else
-    {
-      tables = $('table', $(html));
-      tables.each(function(){
-        var i;
-      });
-    }  
   }
 
   google.authorize(function() {
