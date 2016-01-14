@@ -73,16 +73,16 @@ $( document ).ready(function() {
       {
         $('#liencapsulecont').hide();
         $('#mainform').show();
-        $.fn.push = function(selector) {
-            Array.prototype.push.apply(this, $.makeArray($(selector)));
-            return this;
-        };
         tables = $('table', $(html));
-        console.log(tables.get( 7 ));
-        console.log(tables.get( 8 ));
-        tables.each(function(){
-          
-        });
+        for(i=7; i<=tables.length;i+=2)
+        {
+          if($(tables.get(i)).attr('summary')=="Cette table établit la liste des horaires prévus et des professeurs affectés à ce cours.." || 
+              $(tables.get(i)).attr('summary')=="Cette table de disposition sert à présenter les détails de l'horaire des cours")
+          {
+            $('.list-group').append('<li class="list-group-item">'+$('caption',tables.get(i)).text()+'</li>');
+            console.log(tables.get(i+1));
+          }          
+        }
       }
     }
   }
