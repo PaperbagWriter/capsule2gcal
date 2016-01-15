@@ -7,6 +7,7 @@ $( document ).ready(function() {
 
   var form = $('#form');
   var success = $('#success');
+  var listEvents = [];
 
   form.on('submit', function(event) {
     event.preventDefault();
@@ -33,19 +34,18 @@ $( document ).ready(function() {
         } else {
         }
       }
-    };
-
+    };    
     var event = {
-      'summary': 'TEST UNI EXTENSION',
-      'location': '800 Howard St., San Francisco, CA 94103',
-      'description': 'A chance to hear more about Google\'s developer products.',
+      'summary': listEvents[0].name,
+      'location': 'Pavillon'+listEvents[0].place,
+      'description': listEvents[0].name + " " + listEvents[0].teachingMethod + " " + listEvents[0].teacher,
       'start': {
         'dateTime': '2015-05-28T09:00:00-07:00',
-        'timeZone': 'America/Los_Angeles'
+        'timeZone': 'America/New York'
       },
       'end': {
         'dateTime': '2015-05-28T17:00:00-07:00',
-        'timeZone': 'America/Los_Angeles'
+        'timeZone': 'America/New York'
       }
     };
     var message = JSON.stringify(event);
@@ -73,19 +73,63 @@ $( document ).ready(function() {
       {
         $('#liencapsulecont').hide();
         $('#mainform').show();
-        tables = $('table', $(html));
-        for(i=7; i<=tables.length;i+=2)
+        tables = $('table', $(html));        
+        //Pair CourseDescription X CourseScheduleAndInfo
+        for(i=7; i<=tables.length; i+=2)
         {
-          if($(tables.get(i)).attr('summary')=="Cette table établit la liste des horaires prévus et des professeurs affectés à ce cours.." || 
+          if($(tables.get(i+1)).attr('summary')=="Cette table établit la liste des horaires prévus et des professeurs affectés à ce cours.." && 
               $(tables.get(i)).attr('summary')=="Cette table de disposition sert à présenter les détails de l'horaire des cours")
-          {
-            $('.list-group').append('<li class="list-group-item">'+$('caption',tables.get(i)).text()+'</li>');
-            console.log(tables.get(i+1));
-          }          
+          {         
+            //CourseScheduleAndInfo
+            var trs = $('tr',tables.get(i+1));
+            for(j=1; j<=trs.length-1; j++)
+            {
+              course = {
+                name:$('caption',tables.get(i)).text(),
+                type:null,
+                hour:null,
+                day:null,
+                place:null,
+                fromDatetoDate:null,
+                teachingMethod:null,
+                teacher:null
+              };
+              var tds = $('td',trs.get(j));
+              for(h=0; h<=6;h++)
+              {                
+                switch(h)
+                {
+                  case 0:
+                    course.type = $(tds.get(h)).text();  
+                    break;  
+                  case 1:   
+                    course.hour = $(tds.get(h)).text();  
+                    break;  
+                  case 2:
+                    course.day = $(tds.get(h)).text();  
+                    break;               
+                  case 3:
+                    if($('abbr ',tds.get(h)).text() == ""){course.place=$(tds.get(h)).text();}else{course.place=$('abbr ',tds.get(h)).text();}  
+                    break; 
+                  case 4:         
+                    course.fromDatetoDate = $(tds.get(h)).text();  
+                    break; 
+                  case 5:         
+                   course.teachingMethod = $(tds.get(h)).text();  
+                   break;  
+                  case 6:         
+                   course.teacher = $(tds.get(h)).text();  
+                   break;       
+                }
+              }    
+              listEvents.push(course);                      
+            }                                                         
+          }                    
         }
+        addEvent(listEvents);
       }
     }
-  }
+  }               
 
   google.authorize(function() {
     chrome.tabs.query({active: true,currentWindow: true}, function(tabs) {
